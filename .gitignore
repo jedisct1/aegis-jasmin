@@ -1,3 +1,6 @@
+*~
+.vscode
+src/*.o
+test
 zig-cache
 zig-out
-*~
