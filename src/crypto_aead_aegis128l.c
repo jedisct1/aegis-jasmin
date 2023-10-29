@@ -128,22 +128,16 @@ crypto_aead_aegis128l_decrypt(unsigned char       *m,
                               const unsigned char *npub,
                               const unsigned char *k)
 {
-    int ret;
-
     (void) nsec;
 
     if (clen < 16) {
         return -1;
     }
-    ret = crypto_aead_aegis128l_decrypt_detached(
-        m, NULL, c, clen - 16, c + clen - 16, ad, adlen, npub, k);
     if (mlen_p != NULL) {
-        *mlen_p = 0;
-        if (ret != 0) {
-            *mlen_p = clen - 16;
-        }
+        *mlen_p = clen - 16;
     }
-    return ret;
+    return crypto_aead_aegis128l_decrypt_detached(
+        m, NULL, c, clen - 16, c + clen - 16, ad, adlen, npub, k);
 }
 
 int
@@ -175,20 +169,14 @@ crypto_aead_aegis128lt32_decrypt(unsigned char       *m,
                                  const unsigned char *npub,
                                  const unsigned char *k)
 {
-    int ret;
-
     (void) nsec;
 
     if (clen < 16) {
         return -1;
     }
-    ret = crypto_aead_aegis128lt32_decrypt_detached(
-        m, NULL, c, clen - 32, c + clen - 32, ad, adlen, npub, k);
     if (mlen_p != NULL) {
-        *mlen_p = 0;
-        if (ret != 0) {
-            *mlen_p = clen - 32;
-        }
+        *mlen_p = clen - 32;
     }
-    return ret;
+    return crypto_aead_aegis128lt32_decrypt_detached(
+        m, NULL, c, clen - 32, c + clen - 32, ad, adlen, npub, k);
 }
