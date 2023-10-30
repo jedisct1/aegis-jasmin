@@ -407,7 +407,7 @@ L_aegis128l_decrypt$1:
 	addq	$-1, %rax
 L_aegis128l_decrypt$2:
 	movq	%r11, %rsp
-	ret 
+	ret
 __aegis128l_encrypt:
 _aegis128l_encrypt:
 	movq	%rsp, %r11
@@ -786,7 +786,7 @@ L_aegis128l_encrypt$1:
 	vmovdqu	%xmm0, (%rcx)
 L_aegis128l_encrypt$2:
 	movq	%r11, %rsp
-	ret 
+	ret
 	.data
 	.p2align	5
 _glob_data:
