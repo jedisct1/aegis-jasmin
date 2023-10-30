@@ -121,7 +121,7 @@ inline fn init(reg u64 key_p, reg u64 nonce_p)
 }
 
 inline fn finalize(reg u128[8] st, reg u64 tag_p, reg u8 tag_len,
-                   reg u64 ad_len, reg u64 msg_len, reg u8 verify)
+                   reg u64 ad_len, reg u64 msg_len, inline bool verify)
     -> reg u64
 {
     stack u64[2] sizes;
@@ -147,7 +147,7 @@ inline fn finalize(reg u128[8] st, reg u64 tag_p, reg u8 tag_len,
         tag ^= st[5];
         tag ^= st[6];
         
-        if (verify != 0) {
+        if (verify) {
             reg u128 valid;
             valid = (u128)[tag_p];            
             valid = #VPCMPEQ_2u64(valid, tag);
@@ -167,7 +167,7 @@ inline fn finalize(reg u128[8] st, reg u64 tag_p, reg u8 tag_len,
         tag[0] ^= st[3];
         tag[1] ^= st[7];
         
-        if (verify != 0) {
+        if (verify) {
             reg u128[2] valid;
             valid[0] = (u128)[tag_p];
             valid[1] = (u128)[tag_p + 16];
@@ -312,7 +312,7 @@ export fn _aegis128l_encrypt(reg u64 params)
     reg u64 ad_len msg_len;
     ad_len = ad_len_;
     msg_len = msg_len_;
-    finalize(st, tag_p, tag_len, ad_len, msg_len, 0);
+    finalize(st, tag_p, tag_len, ad_len, msg_len, false);
 }
 
 export fn _aegis128l_decrypt(reg u64 params)
@@ -440,7 +440,7 @@ export fn _aegis128l_decrypt(reg u64 params)
     msg_len = ct_len_;
     
     reg u64 ret;    
-    ret = finalize(st, tag_p, tag_len, ad_len, msg_len, 1);
+    ret = finalize(st, tag_p, tag_len, ad_len, msg_len, true);
 
     return ret;
 }
