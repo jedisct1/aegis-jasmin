@@ -4,16 +4,17 @@ inline fn update(#secret reg u128[8] st,
 {
     reg u128 st7;
     st7 = st[7];
+    reg u128[2] t;
+    t[1] = st[4] ^ m1;
     st[7] = #VAESENC(st[6], st[7]);
     st[6] = #VAESENC(st[5], st[6]);
     st[5] = #VAESENC(st[4], st[5]);
-    st[4] = #VAESENC(st[3], st[4]);
+    st[4] = #VAESENC(st[3], t[1]);
+    t[0] = st[0] ^ m0;
     st[3] = #VAESENC(st[2], st[3]);
     st[2] = #VAESENC(st[1], st[2]);
     st[1] = #VAESENC(st[0], st[1]);
-    st[0] = #VAESENC(st7, st[0]);
-    st[0] ^= m0;
-    st[4] ^= m1;
+    st[0] = #VAESENC(st7, t[0]);
 
     return st;
 }
@@ -36,9 +37,9 @@ inline fn enc(#secret reg u128[8] st, #secret reg u128[2] t)
     z[1] = st[2] ^ st[5];
     z[0] ^= mask[0];
     z[1] ^= mask[1];
+    st = update(st, t[0], t[1]);
     #declassify out[0] = t[0] ^ z[0];
     #declassify out[1] = t[1] ^ z[1];
-    st = update(st, t[0], t[1]);
 
     return st, out;
 }
@@ -140,7 +141,7 @@ inline fn finalize(#secret reg u128[8] st,
     for i = 0 to 7 {
         st = update(st, t, t);
     }
-    
+
     reg u64 ret;
     if (tag_len == 16) {
         reg u128 tag;
@@ -150,27 +151,27 @@ inline fn finalize(#secret reg u128[8] st,
         tag ^= st[4];
         tag ^= st[5];
         tag ^= st[6];
-        
+
         if (verify) {
             reg u128 valid;
-            valid = (u128)[tag_p];            
+            valid = (u128)[tag_p];
             valid = #VPCMPEQ_2u64(valid, tag);
             ret = #VPMOVMSKB_u128u64(valid);
             ret += 1;
             ret >>= 16;
-            ret -= 1;            
+            ret -= 1;
         } else {
             (u128)[tag_p] = tag;
         }
     } else {
         reg u128[2] tag;
         tag[0] = st[0] ^ st[1];
-        tag[1] = st[4] ^ st[5];        
+        tag[1] = st[4] ^ st[5];
         tag[0] ^= st[2];
-        tag[1] ^= st[6];        
+        tag[1] ^= st[6];
         tag[0] ^= st[3];
         tag[1] ^= st[7];
-        
+
         if (verify) {
             reg u128[2] valid;
             valid[0] = (u128)[tag_p];
@@ -435,8 +436,8 @@ export fn _aegis128l_decrypt(#public reg u64 params)
     }
 
     // finalize
-    
-    reg u64 ret;    
+
+    reg u64 ret;
     ret = finalize(st, tag_p, tag_len, ad_len_, ct_len_, true);
 
     return ret;

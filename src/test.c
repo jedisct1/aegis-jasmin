@@ -1,5 +1,6 @@
 
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 
 #include "crypto_aead_aegis128l.h"
@@ -34,6 +35,18 @@ main(void)
     }
     puts("");
     printf("ret = %d\n", ret);
+
+    const size_t   size = 1024 * 1024;
+    unsigned char *buf  = malloc(size);
+    memset(buf, 0x42, size);
+    for (unsigned int i = 0; i < 100000; i++) {
+        crypto_aead_aegis128l_encrypt_detached(buf, mac, NULL, buf, size, ad, sizeof ad, NULL, npub,
+                                               k);
+    }
+    for (size_t i = 0; i < sizeof mac; i++) {
+        printf("%02x", mac[i]);
+    }
+    puts("");
 
     return 0;
 }
