@@ -2,20 +2,19 @@ inline fn update(#secret reg u128[8] st,
                  #secret reg u128 m0, #secret reg u128 m1)
      -> #secret reg u128[8]
 {
-    reg u128 t1 t2;
-    t1 = #VPXOR(st[0], m0);
-    t2 = #VPXOR(st[4], m1);
     reg u128 st7;
     st7 = st[7];
     st[7] = #VAESENC(st[6], st[7]);
     st[6] = #VAESENC(st[5], st[6]);
     st[5] = #VAESENC(st[4], st[5]);
-    st[4] = #VAESENC(st[3], t2);
+    st[4] = #VAESENC(st[3], st[4]);
     st[3] = #VAESENC(st[2], st[3]);
     st[2] = #VAESENC(st[1], st[2]);
-    st[1] = #VAESENC(st[0], st[1]);    
-    st[0] = #VAESENC(st7, t1);
-       
+    st[1] = #VAESENC(st[0], st[1]);
+    st[0] = #VAESENC(st7, st[0]);
+    st[0] ^= m0;
+    st[4] ^= m1;
+
     return st;
 }
 
@@ -234,10 +233,10 @@ export fn _aegis128l_encrypt(#public reg u64 params)
     }
     reg u64 left;
     left = ad_len_;
-    left = left - i;
+    left -= i;
 
     if (left > 0) {
-        ad_p = ad_p + i;
+        ad_p += i;
 
         stack u128[2] pad;
         reg u128 zero;
@@ -279,10 +278,10 @@ export fn _aegis128l_encrypt(#public reg u64 params)
     }
 
     left = msg_len_;
-    left = left - i;
+    left -= i;
     if (left > 0) {
-        msg_p = msg_p + i;
-        ct_p = ct_p + i;
+        msg_p += i;
+        ct_p += i;
 
         stack u128[2] pad;
         reg u128 zero;
@@ -314,10 +313,7 @@ export fn _aegis128l_encrypt(#public reg u64 params)
 
     // finalize
 
-    reg u64 ad_len msg_len;
-    ad_len = ad_len_;
-    msg_len = msg_len_;
-    finalize(st, tag_p, tag_len, ad_len, msg_len, false);
+    finalize(st, tag_p, tag_len, ad_len_, msg_len_, false);
 }
 
 export fn _aegis128l_decrypt(#public reg u64 params)
@@ -360,10 +356,10 @@ export fn _aegis128l_decrypt(#public reg u64 params)
     }
     reg u64 left;
     left = ad_len_;
-    left = left - i;
+    left -= i;
 
     if (left > 0) {
-        ad_p = ad_p + i;
+        ad_p += i;
 
         stack u128[2] pad;
         reg u128 zero;
@@ -405,10 +401,10 @@ export fn _aegis128l_decrypt(#public reg u64 params)
     }
 
     left = ct_len_;
-    left = left - i;
+    left -= i;
     if (left > 0) {
-        msg_p = msg_p + i;
-        ct_p = ct_p + i;
+        msg_p += i;
+        ct_p += i;
 
         stack u128[2] pad;
         reg u128 zero;
@@ -439,13 +435,9 @@ export fn _aegis128l_decrypt(#public reg u64 params)
     }
 
     // finalize
-
-    reg u64 ad_len msg_len;
-    ad_len = ad_len_;
-    msg_len = ct_len_;
     
     reg u64 ret;    
-    ret = finalize(st, tag_p, tag_len, ad_len, msg_len, true);
+    ret = finalize(st, tag_p, tag_len, ad_len_, ct_len_, true);
 
     return ret;
 }

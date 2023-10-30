@@ -9,7 +9,7 @@ main(void)
 {
     unsigned char k[16]    = { 0 };
     unsigned char npub[16] = { 0 };
-    unsigned char mac[32]  = { 0 };
+    unsigned char mac[16]  = { 0 };
     unsigned char ad[33]   = { 0 };
     unsigned char m[42]    = { 0 };
     unsigned char ct[42]   = { 0 };
