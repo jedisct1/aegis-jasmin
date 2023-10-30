@@ -123,9 +123,11 @@ inline fn init(#public reg u64 key_p, #public reg u64 nonce_p)
     return st;
 }
 
-inline fn finalize(reg u128[8] st, reg u64 tag_p, reg u8 tag_len,
-                   reg u64 ad_len, reg u64 msg_len, inline bool verify)
-    -> reg u64
+inline fn finalize(#secret reg u128[8] st,
+                   #public reg u64 tag_p, #public  reg u8 tag_len,
+                   #public reg u64 ad_len, #public reg u64 msg_len,
+                   inline bool verify)
+    -> #secret reg u64
 {
     stack u64[2] sizes;
     ad_len <<= 3;
