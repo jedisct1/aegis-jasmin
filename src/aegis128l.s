@@ -146,6 +146,7 @@ _aegis128l_decrypt:
 	andq	$-32, %rdi
 	xorq	%r9, %r9
 	jmp 	L_aegis128l_decrypt$15
+	.p2align	5
 L_aegis128l_decrypt$16:
 	vmovdqu	(%r8,%r9), %xmm1
 	vmovdqu	16(%r8,%r9), %xmm4
@@ -199,6 +200,7 @@ L_aegis128l_decrypt$12:
 	andq	$-32, %rdi
 	xorq	%r8, %r8
 	jmp 	L_aegis128l_decrypt$10
+	.p2align	5
 L_aegis128l_decrypt$11:
 	vmovdqu	(%rax,%r8), %xmm4
 	vmovdqu	16(%rax,%r8), %xmm1
@@ -549,6 +551,7 @@ _aegis128l_encrypt:
 	andq	$-32, %rdi
 	xorq	%r9, %r9
 	jmp 	L_aegis128l_encrypt$13
+	.p2align	5
 L_aegis128l_encrypt$14:
 	vmovdqu	(%r8,%r9), %xmm1
 	vmovdqu	16(%r8,%r9), %xmm4
@@ -602,6 +605,7 @@ L_aegis128l_encrypt$10:
 	andq	$-32, %rdi
 	xorq	%r8, %r8
 	jmp 	L_aegis128l_encrypt$8
+	.p2align	5
 L_aegis128l_encrypt$9:
 	vmovdqu	(%rsi,%r8), %xmm1
 	vmovdqu	16(%rsi,%r8), %xmm4

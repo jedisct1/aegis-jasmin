@@ -225,7 +225,7 @@ export fn _aegis128l_encrypt(#public reg u64 params)
     inline int j;
 
     i = #set0();
-    while (i < full_blocks) {
+    #align while (i < full_blocks) {
         reg u128[2] t;
         t[0] = (u128)[ad_p + i];
         t[1] = (u128)[ad_p + i + 16];
@@ -267,7 +267,7 @@ export fn _aegis128l_encrypt(#public reg u64 params)
     inline int j;
 
     i = #set0();
-    while (i < full_blocks) {
+    #align while (i < full_blocks) {
         reg u128[2] t;
         t[0] = (u128)[msg_p + i];
         t[1] = (u128)[msg_p + i + 16];
@@ -351,7 +351,7 @@ export fn _aegis128l_decrypt(#public reg u64 params)
     inline int j;
 
     i = #set0();
-    while (i < full_blocks) {
+    #align while (i < full_blocks) {
         reg u128[2] t;
         t[0] = (u128)[ad_p + i];
         t[1] = (u128)[ad_p + i + 16];
@@ -393,7 +393,7 @@ export fn _aegis128l_decrypt(#public reg u64 params)
     inline int j;
 
     i = #set0();
-    while (i < full_blocks) {
+    #align while (i < full_blocks) {
         #public reg u128[2] t;
         #declassify t[0] = (u128)[ct_p + i];
         #declassify t[1] = (u128)[ct_p + i + 16];
