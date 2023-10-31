@@ -37,9 +37,9 @@ inline fn enc(#secret reg u128[8] st, #secret reg u128[2] t)
     z[1] = st[2] ^ st[5];
     z[0] ^= mask[0];
     z[1] ^= mask[1];
-    st = update(st, t[0], t[1]);
     #declassify out[0] = t[0] ^ z[0];
     #declassify out[1] = t[1] ^ z[1];
+    st = update(st, t[0], t[1]);
 
     return st, out;
 }
@@ -124,12 +124,40 @@ inline fn init(#public reg u64 key_p, #public reg u64 nonce_p)
     return st;
 }
 
+inline fn reject_weak(#secret reg u128[8] st)
+    -> #secret reg u64
+{
+    reg u128 w;
+    w = st[0] ^ st[1];
+    reg u128[8] x;
+    inline int i;
+    for i = 2 to 8 {
+        x[i] = st[0] ^ st[i];
+    }
+    for i = 2 to 8 {
+        w |= x[i];
+    }
+    reg u128 zero;
+    zero = #set0_128();
+    w = #VPCMPEQ_2u64(w, zero);
+    reg u64 ret;
+    ret = #VPMOVMSKB_u128u64(w);
+    ret += 1;
+    ret >>= 16;
+    ret = -ret;
+
+    return ret;
+}
+
 inline fn finalize(#secret reg u128[8] st,
                    #public reg u64 tag_p, #public  reg u8 tag_len,
                    #public reg u64 ad_len, #public reg u64 msg_len,
                    #public inline bool verify)
     -> #secret reg u64
 {
+    reg u64 ret;
+    ret = reject_weak(st);
+
     stack u64[2] sizes;
     ad_len <<= 3;
     msg_len <<= 3;
@@ -143,7 +171,6 @@ inline fn finalize(#secret reg u128[8] st,
         st = update(st, t, t);
     }
 
-    reg u64 ret;
     if (tag_len == 16) {
         reg u128 tag;
         tag = st[0] ^ st[1];
@@ -157,10 +184,12 @@ inline fn finalize(#secret reg u128[8] st,
             reg u128 valid;
             valid = (u128)[tag_p];
             valid = #VPCMPEQ_2u64(valid, tag);
-            ret = #VPMOVMSKB_u128u64(valid);
-            ret += 1;
-            ret >>= 16;
-            ret -= 1;
+            reg u64 ret0;
+            ret0 = #VPMOVMSKB_u128u64(valid);
+            ret0 += 1;
+            ret0 >>= 16;
+            ret0 -= 1;
+            ret |= ret0;
         } else {
             (u128)[tag_p] = tag;
         }
@@ -180,10 +209,12 @@ inline fn finalize(#secret reg u128[8] st,
             valid[0] = #VPCMPEQ_2u64(valid[0], tag[0]);
             valid[1] = #VPCMPEQ_2u64(valid[1], tag[1]);
             valid[0] &= valid[1];
-            ret = #VPMOVMSKB_u128u64(valid[0]);
-            ret += 1;
-            ret >>= 16;
-            ret -= 1;
+            reg u64 ret0;
+            ret0 = #VPMOVMSKB_u128u64(valid[0]);
+            ret0 += 1;
+            ret0 >>= 16;
+            ret0 -= 1;
+            ret |= ret0;
         } else {
             (u128)[tag_p] = tag[0];
             (u128)[tag_p + 16] = tag[1];
@@ -197,6 +228,7 @@ inline fn finalize(#secret reg u128[8] st,
 }
 
 export fn _aegis128l_encrypt(#public reg u64 params)
+    -> #secret reg u64
 {
     #public reg u64 ct_p tag_p msg_p ad_p key_p nonce_p;
     #public stack u64 ad_len_ msg_len_;
@@ -316,7 +348,10 @@ export fn _aegis128l_encrypt(#public reg u64 params)
 
     // finalize
 
-    finalize(st, tag_p, tag_len, ad_len_, msg_len_, false);
+    reg u64 ret;
+    ret = finalize(st, tag_p, tag_len, ad_len_, msg_len_, false);
+
+    return ret;
 }
 
 export fn _aegis128l_decrypt(#public reg u64 params)

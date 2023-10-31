@@ -21,8 +21,7 @@ main(void)
     npub[0] = 0x10;
     npub[2] = 0x02;
 
-    crypto_aead_aegis256_encrypt_detached(ct, mac, NULL, m, sizeof m, ad, sizeof ad, NULL, npub,
-                                          k);
+    crypto_aead_aegis256_encrypt_detached(ct, mac, NULL, m, sizeof m, ad, sizeof ad, NULL, npub, k);
     int ret =
         crypto_aead_aegis256_decrypt_detached(m, NULL, ct, sizeof ct, mac, ad, sizeof ad, npub, k);
 

@@ -15,8 +15,8 @@ typedef struct Params {
     const unsigned char *npub;
 } Params;
 
-extern void _aegis128l_encrypt(const Params *params);
-extern int  _aegis128l_decrypt(const Params *params);
+extern int _aegis128l_encrypt(const Params *params);
+extern int _aegis128l_decrypt(const Params *params);
 
 int
 crypto_aead_aegis128l_encrypt_detached(unsigned char       *c,
@@ -31,9 +31,7 @@ crypto_aead_aegis128l_encrypt_detached(unsigned char       *c,
                                        const unsigned char *k)
 {
     const Params params = { c, mlen, mac, 16, (unsigned char *) m, mlen, ad, adlen, k, npub };
-    _aegis128l_encrypt(&params);
-
-    return 0;
+    return _aegis128l_encrypt(&params);
 }
 
 int
@@ -69,11 +67,10 @@ crypto_aead_aegis128lt32_encrypt_detached(unsigned char       *c,
 
     (void) nsec;
 
-    _aegis128l_encrypt(&params);
-
     if (maclen_p != NULL) {
         *maclen_p = 32;
     }
+    return _aegis128l_encrypt(&params);
 }
 
 int
@@ -109,12 +106,11 @@ crypto_aead_aegis128l_encrypt(unsigned char       *c,
 {
     (void) nsec;
 
-    crypto_aead_aegis128l_encrypt_detached(c, c + mlen, NULL, m, mlen, ad, adlen, NULL, npub, k);
-
     if (clen_p != NULL) {
         *clen_p = mlen + 16;
     }
-    return 0;
+    return crypto_aead_aegis128l_encrypt_detached(
+        c, c + mlen, NULL, m, mlen, ad, adlen, NULL, npub, k);
 }
 
 int
@@ -152,10 +148,11 @@ crypto_aead_aegis128lt32_encrypt(unsigned char       *c,
                                  const unsigned char *k)
 {
     (void) nsec;
-    crypto_aead_aegis128lt32_encrypt_detached(c, c + mlen, NULL, m, mlen, ad, adlen, NULL, npub, k);
     if (clen_p != NULL) {
         *clen_p = mlen + 32;
     }
+    return crypto_aead_aegis128lt32_encrypt_detached(
+        c, c + mlen, NULL, m, mlen, ad, adlen, NULL, npub, k);
 }
 
 int
