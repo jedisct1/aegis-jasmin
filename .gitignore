@@ -4,3 +4,5 @@ src/*.o
 test
 zig-cache
 zig-out
+test128l
+test256

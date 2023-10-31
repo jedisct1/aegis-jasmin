@@ -22,7 +22,7 @@ extern "C" {
 #define crypto_aead_aegis128l_KEYBYTES  16U
 #define crypto_aead_aegis128l_NSECBYTES 0U
 #define crypto_aead_aegis128l_NPUBBYTES 16U
-#define crypto_aead_aegis128l_ABYTES    32U
+#define crypto_aead_aegis128l_ABYTES    16U
 
 int crypto_aead_aegis128l_encrypt(unsigned char       *c,
                                   unsigned long long  *clen_p,

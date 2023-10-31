@@ -171,7 +171,7 @@ crypto_aead_aegis128lt32_decrypt(unsigned char       *m,
 {
     (void) nsec;
 
-    if (clen < 16) {
+    if (clen < 32) {
         return -1;
     }
     if (mlen_p != NULL) {

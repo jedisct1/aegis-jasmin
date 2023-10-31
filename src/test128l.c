@@ -39,7 +39,7 @@ main(void)
     const size_t   size = 1024 * 1024;
     unsigned char *buf  = malloc(size);
     memset(buf, 0x42, size);
-    for (unsigned int i = 0; i < 100000; i++) {
+    for (unsigned int i = 0; i < 300000; i++) {
         crypto_aead_aegis128l_encrypt_detached(buf, mac, NULL, buf, size, ad, sizeof ad, NULL, npub,
                                                k);
     }
