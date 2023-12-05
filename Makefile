@@ -2,6 +2,8 @@ all: tests
 
 tests: test128l test256
 
+asm: src/aegis128l.s src/aegis256.s
+
 src/aegis128l.o: src/aegis128l.s
 	$(AS) -o src/aegis128l.o src/aegis128l.s
 
@@ -26,8 +28,10 @@ test128l: src/aegis128l.o src/crypto_aead_aegis128l.o src/test128l.c
 test256: src/aegis256.o src/crypto_aead_aegis256.o src/test256.c
 	$(CC) -O2 -o test256 src/aegis256.o src/crypto_aead_aegis256.o src/test256.c
 
+asmclean:
+	rm -f src/*.s
+
 clean:
 	rm -f src/*.o test128l test256
 
-distclean: clean
-	rm -f src/*.s
+distclean: clean asmclean
