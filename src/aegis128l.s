@@ -430,6 +430,17 @@ L_aegis128l_decrypt$1:
 	orq 	%rcx, %rax
 L_aegis128l_decrypt$2:
 	movq	%r11, %rsp
+	movq	%rsp, %rsi
+	vpxor	%xmm2, %xmm2, %xmm2
+	andq	$-16, %rsp
+	subq	$96, %rsp
+	vmovdqu	%xmm2, 80(%rsp)
+	vmovdqu	%xmm2, 64(%rsp)
+	vmovdqu	%xmm2, 48(%rsp)
+	vmovdqu	%xmm2, 32(%rsp)
+	vmovdqu	%xmm2, 16(%rsp)
+	vmovdqu	%xmm2, (%rsp)
+	movq	%rsi, %rsp
 	ret
 __aegis128l_encrypt:
 _aegis128l_encrypt:
@@ -830,6 +841,15 @@ L_aegis128l_encrypt$1:
 	vmovdqu	%xmm0, (%rcx)
 L_aegis128l_encrypt$2:
 	movq	%r11, %rsp
+	movq	%rsp, %rsi
+	vpxor	%xmm2, %xmm2, %xmm2
+	andq	$-16, %rsp
+	subq	$64, %rsp
+	vmovdqu	%xmm2, 48(%rsp)
+	vmovdqu	%xmm2, 32(%rsp)
+	vmovdqu	%xmm2, 16(%rsp)
+	vmovdqu	%xmm2, (%rsp)
+	movq	%rsi, %rsp
 	ret
 	.data
 	.p2align	5
