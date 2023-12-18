@@ -1,13 +1,28 @@
 inline fn update(#secret reg u128[6] st, #secret reg u128 m)
      -> #secret reg u128[6]
 {
-    reg u128 st5;
+    reg u128 st5 t;
     st5 = st[5];
-    reg u128 t;
-    st[5] = #VAESENC(st[4], st[5]);
+    t = st[0] ^ m;
+    st[5] = #VAESENC(st[4], st5);
     st[4] = #VAESENC(st[3], st[4]);
     st[3] = #VAESENC(st[2], st[3]);
+    st[2] = #VAESENC(st[1], st[2]);
+    st[1] = #VAESENC(st[0], st[1]);
+    st[0] = #VAESENC(st5, t);
+
+    return st;
+}
+
+inline fn update2(#secret reg u128[6] st, #secret reg u128 m, #secret
+                  reg u128 st5)
+     -> #secret reg u128[6]
+{
+    reg u128 t;
     t = st[0] ^ m;
+    st[5] = #VAESENC(st[4], st5);
+    st[4] = #VAESENC(st[3], st[4]);
+    st[3] = #VAESENC(st[2], st[3]);
     st[2] = #VAESENC(st[1], st[2]);
     st[1] = #VAESENC(st[0], st[1]);
     st[0] = #VAESENC(st5, t);
@@ -26,13 +41,14 @@ inline fn absorb(#secret reg u128[6] st, #secret reg u128 t)
 inline fn enc(#secret reg u128[6] st, #secret reg u128 t)
     -> #secret reg u128[6], #transient reg u128
 {
-    reg u128 out mask z;
-    mask = st[2] & st[3];
+    reg u128 out mask z st5;
     z = st[1] ^ st[4];
-    z ^= st[5];
+    mask = st[2] & st[3];
+    st5 = st[5];
     z ^= mask;
+    z ^= st5;
     #declassify out = t ^ z;
-    st = update(st, t);
+    st = update2(st, t, st5);
 
     return st, out;
 }
@@ -40,13 +56,14 @@ inline fn enc(#secret reg u128[6] st, #secret reg u128 t)
 inline fn dec(#secret reg u128[6] st, #public reg u128 t)
     -> #secret reg u128[6], #secret reg u128
 {
-    reg u128 out mask z;
-    mask = st[2] & st[3];
+    reg u128 out mask z st5;
     z = st[1] ^ st[4];
-    z ^= st[5];
+    mask = st[2] & st[3];
+    st5 = st[5];
     z ^= mask;
+    z ^= st5;
     out = t ^ z;
-    st = update(st, out);
+    st = update2(st, out, st5);
 
     return st, out;
 }
@@ -55,11 +72,12 @@ inline fn declast(#secret reg u128[6] st, #public reg u128 t,
                   #public reg u64 left)
     -> #secret reg u128[6], #secret reg u128
 {
-    reg u128 out mask z;
-    mask = st[2] & st[3];
+    reg u128 out mask z st5;
     z = st[1] ^ st[4];
-    z ^= st[5];
+    mask = st[2] & st[3];
+    st5 = st[5];
     z ^= mask;
+    z ^= st5;
     out = t ^ z;
 
     stack u128[1] pad;
@@ -71,7 +89,7 @@ inline fn declast(#secret reg u128[6] st, #public reg u128 t,
         pad[u8(int) i] = 0;
         i += 1;
     }
-    st = update(st, pad[0]);
+    st = update2(st, pad[0], st5);
 
     return st, out;
 }
