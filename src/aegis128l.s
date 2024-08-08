@@ -889,3 +889,5 @@ G$c0:
 	.byte	-23
 	.byte	121
 	.byte	98
+
+.section .note.GNU-stack,"",%progbits
