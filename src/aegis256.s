@@ -429,6 +429,14 @@ L_aegis256_decrypt$1:
 	orq 	%rcx, %rax
 L_aegis256_decrypt$2:
 	movq	%r11, %rsp
+	movq	%rsp, %rsi
+	vpxor	%xmm2, %xmm2, %xmm2
+	andq	$-16, %rsp
+	subq	$48, %rsp
+	vmovdqu	%xmm2, 32(%rsp)
+	vmovdqu	%xmm2, 16(%rsp)
+	vmovdqu	%xmm2, (%rsp)
+	movq	%rsi, %rsp
 	ret
 __aegis256_encrypt:
 _aegis256_encrypt:
@@ -818,40 +826,49 @@ L_aegis256_encrypt$1:
 	vmovdqu	%xmm0, (%rcx)
 L_aegis256_encrypt$2:
 	movq	%r11, %rsp
+	movq	%rsp, %rsi
+	vpxor	%xmm2, %xmm2, %xmm2
+	andq	$-16, %rsp
+	subq	$32, %rsp
+	vmovdqu	%xmm2, 16(%rsp)
+	vmovdqu	%xmm2, (%rsp)
+	movq	%rsi, %rsp
 	ret
 	.data
 	.p2align	5
 _glob_data:
 glob_data:
-      .byte -37
-      .byte 61
-      .byte 24
-      .byte 85
-      .byte 109
-      .byte -62
-      .byte 47
-      .byte -15
-      .byte 32
-      .byte 17
-      .byte 49
-      .byte 66
-      .byte 115
-      .byte -75
-      .byte 40
-      .byte -35
-      .byte 0
-      .byte 1
-      .byte 1
-      .byte 2
-      .byte 3
-      .byte 5
-      .byte 8
-      .byte 13
-      .byte 21
-      .byte 34
-      .byte 55
-      .byte 89
-      .byte -112
-      .byte -23
-      .byte 121
-      .byte 98
+G$c1:
+	.byte	-37
+	.byte	61
+	.byte	24
+	.byte	85
+	.byte	109
+	.byte	-62
+	.byte	47
+	.byte	-15
+	.byte	32
+	.byte	17
+	.byte	49
+	.byte	66
+	.byte	115
+	.byte	-75
+	.byte	40
+	.byte	-35
+G$c0:
+	.byte	0
+	.byte	1
+	.byte	1
+	.byte	2
+	.byte	3
+	.byte	5
+	.byte	8
+	.byte	13
+	.byte	21
+	.byte	34
+	.byte	55
+	.byte	89
+	.byte	-112
+	.byte	-23
+	.byte	121
+	.byte	98
