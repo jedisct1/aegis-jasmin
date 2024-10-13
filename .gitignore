@@ -2,7 +2,8 @@
 .vscode
 src/*.o
 test
-zig-cache
+.zig-cache
 zig-out
 test128l
+test128x2
 test256
