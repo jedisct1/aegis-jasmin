@@ -575,9 +575,9 @@ _aegis128l_encrypt:
 	vaesenc	%xmm3, %xmm4, %xmm2
 	vaesenc	%xmm0, %xmm5, %xmm0
 	vpxor	%xmm1, %xmm8, %xmm12
-	vaesenc	%xmm5, %xmm6, %xmm1
-	vaesenc	%xmm6, %xmm7, %xmm4
-	vaesenc	%xmm7, %xmm8, %xmm3
+	vaesenc	%xmm5, %xmm6, %xmm3
+	vaesenc	%xmm6, %xmm7, %xmm1
+	vaesenc	%xmm7, %xmm8, %xmm4
 	vaesenc	%xmm12, %xmm9, %xmm9
 	movq	56(%rsp), %rdi
 	andq	$-32, %rdi
@@ -592,11 +592,11 @@ L_aegis128l_encrypt$14:
 	vaesenc	%xmm11, %xmm10, %xmm11
 	vaesenc	%xmm10, %xmm2, %xmm10
 	vaesenc	%xmm2, %xmm0, %xmm2
-	vaesenc	%xmm6, %xmm1, %xmm0
+	vaesenc	%xmm6, %xmm3, %xmm0
 	vpxor	%xmm5, %xmm9, %xmm5
+	vaesenc	%xmm3, %xmm1, %xmm3
 	vaesenc	%xmm1, %xmm4, %xmm1
-	vaesenc	%xmm4, %xmm3, %xmm4
-	vaesenc	%xmm3, %xmm9, %xmm3
+	vaesenc	%xmm4, %xmm9, %xmm4
 	vaesenc	%xmm5, %xmm7, %xmm9
 	addq	$32, %r9
 L_aegis128l_encrypt$13:
@@ -626,11 +626,11 @@ L_aegis128l_encrypt$11:
 	vaesenc	%xmm11, %xmm10, %xmm11
 	vaesenc	%xmm10, %xmm2, %xmm10
 	vaesenc	%xmm2, %xmm0, %xmm2
-	vaesenc	%xmm6, %xmm1, %xmm0
+	vaesenc	%xmm6, %xmm3, %xmm0
 	vpxor	%xmm5, %xmm9, %xmm5
+	vaesenc	%xmm3, %xmm1, %xmm3
 	vaesenc	%xmm1, %xmm4, %xmm1
-	vaesenc	%xmm4, %xmm3, %xmm4
-	vaesenc	%xmm3, %xmm9, %xmm3
+	vaesenc	%xmm4, %xmm9, %xmm4
 	vaesenc	%xmm5, %xmm7, %xmm9
 L_aegis128l_encrypt$10:
 	movq	48(%rsp), %rdi
@@ -641,10 +641,10 @@ L_aegis128l_encrypt$10:
 L_aegis128l_encrypt$9:
 	vmovdqu	(%rsi,%r8), %xmm5
 	vmovdqu	16(%rsi,%r8), %xmm6
-	vpand	%xmm1, %xmm4, %xmm7
+	vpand	%xmm3, %xmm1, %xmm7
 	vpand	%xmm11, %xmm10, %xmm8
-	vpxor	%xmm3, %xmm10, %xmm12
-	vpxor	%xmm2, %xmm4, %xmm13
+	vpxor	%xmm4, %xmm10, %xmm12
+	vpxor	%xmm2, %xmm1, %xmm13
 	vpxor	%xmm7, %xmm12, %xmm7
 	vpxor	%xmm8, %xmm13, %xmm8
 	vpxor	%xmm7, %xmm5, %xmm7
@@ -654,11 +654,11 @@ L_aegis128l_encrypt$9:
 	vaesenc	%xmm11, %xmm10, %xmm11
 	vaesenc	%xmm10, %xmm2, %xmm10
 	vaesenc	%xmm2, %xmm0, %xmm2
-	vaesenc	%xmm6, %xmm1, %xmm0
+	vaesenc	%xmm6, %xmm3, %xmm0
 	vpxor	%xmm5, %xmm9, %xmm5
+	vaesenc	%xmm3, %xmm1, %xmm3
 	vaesenc	%xmm1, %xmm4, %xmm1
-	vaesenc	%xmm4, %xmm3, %xmm4
-	vaesenc	%xmm3, %xmm9, %xmm3
+	vaesenc	%xmm4, %xmm9, %xmm4
 	vaesenc	%xmm5, %xmm12, %xmm9
 	vmovdqu	%xmm7, (%rax,%r8)
 	vmovdqu	%xmm8, 16(%rax,%r8)
@@ -686,10 +686,10 @@ L_aegis128l_encrypt$6:
 	jb  	L_aegis128l_encrypt$7
 	vmovdqu	16(%rsp), %xmm5
 	vmovdqu	32(%rsp), %xmm6
-	vpand	%xmm1, %xmm4, %xmm7
+	vpand	%xmm3, %xmm1, %xmm7
 	vpand	%xmm11, %xmm10, %xmm8
-	vpxor	%xmm3, %xmm10, %xmm12
-	vpxor	%xmm2, %xmm4, %xmm13
+	vpxor	%xmm4, %xmm10, %xmm12
+	vpxor	%xmm2, %xmm1, %xmm13
 	vpxor	%xmm7, %xmm12, %xmm7
 	vpxor	%xmm8, %xmm13, %xmm8
 	vpxor	%xmm7, %xmm5, %xmm7
@@ -699,11 +699,11 @@ L_aegis128l_encrypt$6:
 	vaesenc	%xmm11, %xmm10, %xmm11
 	vaesenc	%xmm10, %xmm2, %xmm10
 	vaesenc	%xmm2, %xmm0, %xmm2
-	vaesenc	%xmm6, %xmm1, %xmm0
+	vaesenc	%xmm6, %xmm3, %xmm0
 	vpxor	%xmm5, %xmm9, %xmm5
+	vaesenc	%xmm3, %xmm1, %xmm3
 	vaesenc	%xmm1, %xmm4, %xmm1
-	vaesenc	%xmm4, %xmm3, %xmm4
-	vaesenc	%xmm3, %xmm9, %xmm3
+	vaesenc	%xmm4, %xmm9, %xmm4
 	vaesenc	%xmm5, %xmm12, %xmm9
 	vmovdqu	%xmm7, 16(%rsp)
 	vmovdqu	%xmm8, 32(%rsp)
@@ -719,9 +719,9 @@ L_aegis128l_encrypt$4:
 L_aegis128l_encrypt$3:
 	movq	56(%rsp), %rsi
 	movq	48(%rsp), %rdi
-	vpxor	%xmm3, %xmm9, %xmm12
-	vpxor	%xmm4, %xmm9, %xmm13
-	vpxor	%xmm1, %xmm9, %xmm14
+	vpxor	%xmm4, %xmm9, %xmm12
+	vpxor	%xmm1, %xmm9, %xmm13
+	vpxor	%xmm3, %xmm9, %xmm14
 	vpxor	%xmm0, %xmm9, %xmm5
 	vpxor	%xmm2, %xmm9, %xmm6
 	vpxor	%xmm10, %xmm9, %xmm7
@@ -742,17 +742,17 @@ L_aegis128l_encrypt$3:
 	shlq	$3, %rdi
 	movq	%rsi, (%rsp)
 	movq	%rdi, 8(%rsp)
-	vpxor	(%rsp), %xmm4, %xmm5
+	vpxor	(%rsp), %xmm1, %xmm5
 	vmovdqu	%xmm11, %xmm6
 	vpxor	%xmm5, %xmm0, %xmm12
 	vaesenc	%xmm11, %xmm10, %xmm7
 	vaesenc	%xmm10, %xmm2, %xmm8
 	vaesenc	%xmm2, %xmm0, %xmm2
-	vaesenc	%xmm12, %xmm1, %xmm10
+	vaesenc	%xmm12, %xmm3, %xmm10
 	vpxor	%xmm5, %xmm9, %xmm11
-	vaesenc	%xmm1, %xmm4, %xmm0
-	vaesenc	%xmm4, %xmm3, %xmm1
-	vaesenc	%xmm3, %xmm9, %xmm3
+	vaesenc	%xmm3, %xmm1, %xmm0
+	vaesenc	%xmm1, %xmm4, %xmm1
+	vaesenc	%xmm4, %xmm9, %xmm3
 	vaesenc	%xmm11, %xmm6, %xmm9
 	vmovdqu	%xmm7, %xmm4
 	vpxor	%xmm5, %xmm10, %xmm11
