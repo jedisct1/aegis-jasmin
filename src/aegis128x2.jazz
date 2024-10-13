@@ -196,10 +196,8 @@ inline fn finalize(#secret reg u256[8] st,
         tag256 ^= st[6];
 
         reg u128 tag;
-        reg u128 tagh;
-        tag = (128u) tag256;
-        tagh = #VEXTRACTI128(tag256, 1);
-        tag ^= tagh;
+        tag = #VEXTRACTI128(tag256, 1);
+        tag ^= (128u) tag256;
 
         if (verify) {
             reg u128 valid;
@@ -224,13 +222,10 @@ inline fn finalize(#secret reg u256[8] st,
         tag256[1] ^= st[7];
 
         reg u128[2] tag;
-        reg u128[2] tagh;
-        tag[0] = (128u) tag256[0];
-        tag[1] = (128u) tag256[1];
-        tagh[0] = #VEXTRACTI128(tag256[0], 1);
-        tagh[1] = #VEXTRACTI128(tag256[1], 1);
-        tag[0] ^= tagh[0];
-        tag[1] ^= tagh[1];
+        tag[0] = #VEXTRACTI128(tag256[0], 1);
+        tag[1] = #VEXTRACTI128(tag256[1], 1);
+        tag[0] ^= (128u) tag256[0];
+        tag[1] ^= (128u) tag256[1];
 
         if (verify) {
             reg u128[2] valid;
