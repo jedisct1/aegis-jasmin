@@ -428,8 +428,8 @@ L_aegis128x2_decrypt$3:
 	vpxor	%ymm2, %ymm4, %ymm2
 	vpxor	%ymm1, %ymm3, %ymm1
 	vpxor	%ymm0, %ymm2, %ymm0
-	vextracti128	$0, %ymm1, %xmm2
-	vextracti128	$0, %ymm0, %xmm3
+	vmovdqu	%xmm1, %xmm2
+	vmovdqu	%xmm0, %xmm3
 	vextracti128	$1, %ymm1, %xmm1
 	vextracti128	$1, %ymm0, %xmm0
 	vpxor	%xmm1, %xmm2, %xmm1
@@ -452,7 +452,7 @@ L_aegis128x2_decrypt$1:
 	vpxor	%ymm8, %ymm0, %ymm0
 	vpxor	%ymm4, %ymm0, %ymm0
 	vpxor	%ymm2, %ymm0, %ymm0
-	vextracti128	$0, %ymm0, %xmm1
+	vmovdqu	%xmm0, %xmm1
 	vextracti128	$1, %ymm0, %xmm0
 	vpxor	%xmm0, %xmm1, %xmm0
 	vmovdqu	(%rcx), %xmm1
@@ -893,8 +893,8 @@ L_aegis128x2_encrypt$3:
 	vpxor	%ymm2, %ymm4, %ymm2
 	vpxor	%ymm1, %ymm3, %ymm1
 	vpxor	%ymm0, %ymm2, %ymm0
-	vextracti128	$0, %ymm1, %xmm2
-	vextracti128	$0, %ymm0, %xmm3
+	vmovdqu	%xmm1, %xmm2
+	vmovdqu	%xmm0, %xmm3
 	vextracti128	$1, %ymm1, %xmm1
 	vextracti128	$1, %ymm0, %xmm0
 	vpxor	%xmm1, %xmm2, %xmm1
@@ -909,7 +909,7 @@ L_aegis128x2_encrypt$1:
 	vpxor	%ymm8, %ymm0, %ymm0
 	vpxor	%ymm4, %ymm0, %ymm0
 	vpxor	%ymm2, %ymm0, %ymm0
-	vextracti128	$0, %ymm0, %xmm1
+	vmovdqu	%xmm0, %xmm1
 	vextracti128	$1, %ymm0, %xmm0
 	vpxor	%xmm0, %xmm1, %xmm0
 	vmovdqu	%xmm0, (%rcx)
