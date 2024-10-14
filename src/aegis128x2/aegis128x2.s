@@ -24,9 +24,9 @@ _aegis128x2_decrypt:
 	vmovdqu	(%r9), %xmm0
 	vmovdqu	(%rdi), %xmm1
 	vinserti128	$0, %xmm0, %ymm2, %ymm2
+	vinserti128	$0, %xmm1, %ymm3, %ymm3
 	vinserti128	$1, %xmm0, %ymm2, %ymm0
-	vinserti128	$0, %xmm1, %ymm3, %ymm2
-	vinserti128	$1, %xmm1, %ymm2, %ymm1
+	vinserti128	$1, %xmm1, %ymm3, %ymm1
 	vpxor	%ymm1, %ymm0, %ymm4
 	vpxor	glob_data + 64(%rip), %ymm0, %ymm2
 	vmovdqu	%ymm4, %ymm7
@@ -478,9 +478,9 @@ _aegis128x2_encrypt:
 	vmovdqu	(%r9), %xmm0
 	vmovdqu	(%rdi), %xmm1
 	vinserti128	$0, %xmm0, %ymm2, %ymm2
+	vinserti128	$0, %xmm1, %ymm3, %ymm3
 	vinserti128	$1, %xmm0, %ymm2, %ymm0
-	vinserti128	$0, %xmm1, %ymm3, %ymm2
-	vinserti128	$1, %xmm1, %ymm2, %ymm1
+	vinserti128	$1, %xmm1, %ymm3, %ymm1
 	vpxor	%ymm1, %ymm0, %ymm4
 	vpxor	glob_data + 64(%rip), %ymm0, %ymm2
 	vmovdqu	%ymm4, %ymm7

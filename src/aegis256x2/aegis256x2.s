@@ -26,13 +26,13 @@ _aegis256x2_decrypt:
 	vmovdqu	(%rdi), %xmm2
 	vmovdqu	16(%rdi), %xmm3
 	vinserti128	$0, %xmm0, %ymm4, %ymm4
+	vinserti128	$0, %xmm2, %ymm5, %ymm5
+	vinserti128	$0, %xmm1, %ymm6, %ymm6
+	vinserti128	$0, %xmm3, %ymm7, %ymm7
 	vinserti128	$1, %xmm0, %ymm4, %ymm0
-	vinserti128	$0, %xmm2, %ymm5, %ymm4
-	vinserti128	$1, %xmm2, %ymm4, %ymm2
-	vinserti128	$0, %xmm1, %ymm6, %ymm4
-	vinserti128	$1, %xmm1, %ymm4, %ymm1
-	vinserti128	$0, %xmm3, %ymm7, %ymm4
-	vinserti128	$1, %xmm3, %ymm4, %ymm3
+	vinserti128	$1, %xmm2, %ymm5, %ymm2
+	vinserti128	$1, %xmm1, %ymm6, %ymm1
+	vinserti128	$1, %xmm3, %ymm7, %ymm3
 	vpxor	%ymm2, %ymm0, %ymm2
 	vpxor	%ymm3, %ymm1, %ymm3
 	vpxor	glob_data + 64(%rip), %ymm0, %ymm7
@@ -484,13 +484,13 @@ _aegis256x2_encrypt:
 	vmovdqu	(%rdi), %xmm2
 	vmovdqu	16(%rdi), %xmm3
 	vinserti128	$0, %xmm0, %ymm4, %ymm4
+	vinserti128	$0, %xmm2, %ymm5, %ymm5
+	vinserti128	$0, %xmm1, %ymm6, %ymm6
+	vinserti128	$0, %xmm3, %ymm7, %ymm7
 	vinserti128	$1, %xmm0, %ymm4, %ymm0
-	vinserti128	$0, %xmm2, %ymm5, %ymm4
-	vinserti128	$1, %xmm2, %ymm4, %ymm2
-	vinserti128	$0, %xmm1, %ymm6, %ymm4
-	vinserti128	$1, %xmm1, %ymm4, %ymm1
-	vinserti128	$0, %xmm3, %ymm7, %ymm4
-	vinserti128	$1, %xmm3, %ymm4, %ymm3
+	vinserti128	$1, %xmm2, %ymm5, %ymm2
+	vinserti128	$1, %xmm1, %ymm6, %ymm1
+	vinserti128	$1, %xmm3, %ymm7, %ymm3
 	vpxor	%ymm2, %ymm0, %ymm2
 	vpxor	%ymm3, %ymm1, %ymm3
 	vpxor	glob_data + 64(%rip), %ymm0, %ymm7

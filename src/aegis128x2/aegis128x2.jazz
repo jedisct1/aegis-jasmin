@@ -108,8 +108,8 @@ inline fn init(#public reg u64 key_p, #public reg u64 nonce_p)
     #secret reg u256 k;
     #public reg u256 n;
     k = #VINSERTI128(k, k0, 0);
-    k = #VINSERTI128(k, k0, 1);
     n = #VINSERTI128(n, n0, 0);
+    k = #VINSERTI128(k, k0, 1);
     n = #VINSERTI128(n, n0, 1);
 
     reg u256 kn kc0;
