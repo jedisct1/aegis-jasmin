@@ -99,7 +99,7 @@ inline fn init(#public reg u64 key_p, #public reg u64 nonce_p)
     k = (u128)[key_p];
     #declassify n = (u128)[nonce_p];
 
-    reg u128 kn kc0;
+    #secret reg u128 kn kc0;
 
     kn = k ^ n;
     kc0 = k ^ c0;

@@ -1,8 +1,8 @@
 all: tests
 
-tests: test128l test128x2 test256
+tests: test128l test128x2 test256 test256x2
 
-asm: src/aegis128l.s src/aegis128x2 src/aegis256.s
+asm: src/aegis128l.s src/aegis128x2 src/aegis256.s src/aegis256x2.s
 
 src/aegis128l.o: src/aegis128l.s
 	$(AS) -o src/aegis128l.o src/aegis128l.s
