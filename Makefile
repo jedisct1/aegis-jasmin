@@ -7,21 +7,21 @@ asm: src/aegis128l/aegis128l.s src/aegis128x2/aegis128x2.s src/aegis256/aegis256
 src/aegis128l/aegis128l.o: src/aegis128l/aegis128l.s
 	$(AS) -o src/aegis128l/aegis128l.o src/aegis128l/aegis128l.s
 
-src/aegis128x2/aegis128x2.o: src/aegis128x2/aegis128x2.s
-	$(AS) -o src/aegis128x2/aegis128x2.o src/aegis128x2/aegis128x2.s
-
 src/aegis128l/aegis128l.s: src/aegis128l/aegis128l.jazz
 	jasmin-ct src/aegis128l/aegis128l.jazz && jasminc -stack-zero unrolled -stack-zero-size u128 -o src/aegis128l/aegis128l.s src/aegis128l/aegis128l.jazz
 	echo >> src/aegis128l/aegis128l.s
 	echo '.section .note.GNU-stack,"",%progbits' >> src/aegis128l/aegis128l.s
 
+src/aegis128l/crypto_aead_aegis128l.o: src/aegis128l/crypto_aead_aegis128l.c src/aegis128l/crypto_aead_aegis128l.h
+	$(CC) -O2 -c -o src/aegis128l/crypto_aead_aegis128l.o src/aegis128l/crypto_aead_aegis128l.c
+
+src/aegis128x2/aegis128x2.o: src/aegis128x2/aegis128x2.s
+	$(AS) -o src/aegis128x2/aegis128x2.o src/aegis128x2/aegis128x2.s
+
 src/aegis128x2/aegis128x2.s: src/aegis128x2/aegis128x2.jazz
 	jasmin-ct src/aegis128x2/aegis128x2.jazz && jasminc -stack-zero unrolled -stack-zero-size u128 -o src/aegis128x2/aegis128x2.s src/aegis128x2/aegis128x2.jazz
 	echo >> src/aegis128x2/aegis128x2.s
 	echo '.section .note.GNU-stack,"",%progbits' >> src/aegis128x2/aegis128x2.s
-
-src/aegis128l/crypto_aead_aegis128l.o: src/aegis128l/crypto_aead_aegis128l.c src/aegis128l/crypto_aead_aegis128l.h
-	$(CC) -O2 -c -o src/aegis128l/crypto_aead_aegis128l.o src/aegis128l/crypto_aead_aegis128l.c
 
 src/aegis128x2/crypto_aead_aegis128x2.o: src/aegis128x2/crypto_aead_aegis128x2.c src/aegis128x2/crypto_aead_aegis128x2.h
 	$(CC) -O2 -c -o src/aegis128x2/crypto_aead_aegis128x2.o src/aegis128x2/crypto_aead_aegis128x2.c
