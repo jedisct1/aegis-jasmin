@@ -29,13 +29,24 @@ src/crypto_aead_aegis128x2.o: src/crypto_aead_aegis128x2.c src/crypto_aead_aegis
 src/aegis256.o: src/aegis256.s
 	$(AS) -o src/aegis256.o src/aegis256.s
 
+src/aegis256x2.o: src/aegis256x2.s
+	$(AS) -o src/aegis256x2.o src/aegis256x2.s
+
 src/aegis256.s: src/aegis256.jazz
 	jasmin-ct src/aegis256.jazz && jasminc -stack-zero unrolled -stack-zero-size u128 -o src/aegis256.s src/aegis256.jazz
 	echo >> src/aegis256.s
 	echo '.section .note.GNU-stack,"",%progbits' >> src/aegis256.s
 
+src/aegis256x2.s: src/aegis256x2.jazz
+	jasmin-ct src/aegis256x2.jazz && jasminc -stack-zero unrolled -stack-zero-size u128 -o src/aegis256x2.s src/aegis256x2.jazz
+	echo >> src/aegis256x2.s
+	echo '.section .note.GNU-stack,"",%progbits' >> src/aegis256x2.s
+
 src/crypto_aead_aegis256.o: src/crypto_aead_aegis256.c src/crypto_aead_aegis256.h
 	$(CC) -O2 -c -o src/crypto_aead_aegis256.o src/crypto_aead_aegis256.c
+
+src/crypto_aead_aegis256x2.o: src/crypto_aead_aegis256x2.c src/crypto_aead_aegis256x2.h
+	$(CC) -O2 -c -o src/crypto_aead_aegis256x2.o src/crypto_aead_aegis256x2.c
 
 test128l: src/aegis128l.o src/crypto_aead_aegis128l.o src/test128l.c
 	$(CC) -O2 -o test128l src/aegis128l.o src/crypto_aead_aegis128l.o src/test128l.c
@@ -46,10 +57,13 @@ test128x2: src/aegis128x2.o src/crypto_aead_aegis128x2.o src/test128x2.c
 test256: src/aegis256.o src/crypto_aead_aegis256.o src/test256.c
 	$(CC) -O2 -o test256 src/aegis256.o src/crypto_aead_aegis256.o src/test256.c
 
+test256x2: src/aegis256x2.o src/crypto_aead_aegis256x2.o src/test256x2.c
+	$(CC) -O2 -o test256x2 src/aegis256x2.o src/crypto_aead_aegis256x2.o src/test256x2.c
+
 asmclean:
 	rm -f src/*.s
 
 clean:
-	rm -f src/*.o test128l test128x2 test256
+	rm -f src/*.o test128l test128x2 test256 test256x2
 
 distclean: clean asmclean
