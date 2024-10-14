@@ -78,8 +78,7 @@ inline fn declast(#secret reg u256[8] st, #public reg u256[2] t,
     stack u256[2] pad;
     pad[0] = out[0];
     pad[1] = out[1];
-    reg u64 i;
-    i = left;
+    reg u64 i = left;
     while (i < 64) {
         pad[u8(int) i] = 0;
         i += 1;
@@ -152,8 +151,7 @@ inline fn finalize(#secret reg u256[8] st,
     sizes[2] = ad_len;
     sizes[1] = msg_len;
     sizes[3] = msg_len;
-    reg u256 t;
-    t = st[2] ^ sizes[u256 0];
+    reg u256 t = st[2] ^ sizes[u256 0];
 
     inline int i;
     for i = 0 to 7 {
@@ -248,8 +246,7 @@ export fn _aegis128x2_encrypt(#public reg u64 params)
     full_blocks = ad_len_;
     full_blocks = full_blocks & -64;
 
-    reg u64 i;
-    i = #set0();
+    reg u64 i = #set0();
 
     #align while (i < full_blocks) {
         reg u256[2] t;
@@ -266,8 +263,7 @@ export fn _aegis128x2_encrypt(#public reg u64 params)
         ad_p += i;
 
         stack u256[2] pad;
-        reg u256 zero;
-        zero = #set0_256();
+        reg u256 zero = #set0_256();
         pad[0] = zero;
         pad[1] = zero;
 
@@ -308,8 +304,7 @@ export fn _aegis128x2_encrypt(#public reg u64 params)
         ct_p += i;
 
         stack u256[2] pad;
-        reg u256 zero;
-        zero = #set0_256();
+        reg u256 zero = #set0_256();
         pad[0] = zero;
         pad[1] = zero;
 
@@ -337,8 +332,7 @@ export fn _aegis128x2_encrypt(#public reg u64 params)
 
     // finalize
 
-    reg u64 ret;
-    ret = finalize(st, tag_p, tag_len, ad_len_, msg_len_, false);
+    reg u64 ret = finalize(st, tag_p, tag_len, ad_len_, msg_len_, false);
 
     return ret;
 }
@@ -370,8 +364,7 @@ export fn _aegis128x2_decrypt(#public reg u64 params)
     full_blocks = ad_len_;
     full_blocks = full_blocks & -64;
 
-    reg u64 i;
-    i = #set0();
+    reg u64 i = #set0();
     #align while (i < full_blocks) {
         reg u256[2] t;
         t[0] = (u256)[ad_p + i];
@@ -387,8 +380,7 @@ export fn _aegis128x2_decrypt(#public reg u64 params)
         ad_p += i;
 
         stack u256[2] pad;
-        reg u256 zero;
-        zero = #set0_256();
+        reg u256 zero = #set0_256();
         pad[0] = zero;
         pad[1] = zero;
 
@@ -429,8 +421,7 @@ export fn _aegis128x2_decrypt(#public reg u64 params)
         ct_p += i;
 
         #flexible stack u256[2] pad;
-        reg u256 zero;
-        zero = #set0_256();
+        reg u256 zero = #set0_256();
         pad[0] = zero;
         pad[1] = zero;
 
@@ -458,8 +449,7 @@ export fn _aegis128x2_decrypt(#public reg u64 params)
 
     // finalize
 
-    reg u64 ret;
-    ret = finalize(st, tag_p, tag_len, ad_len_, ct_len_, true);
+    reg u64 ret = finalize(st, tag_p, tag_len, ad_len_, ct_len_, true);
 
     return ret;
 }

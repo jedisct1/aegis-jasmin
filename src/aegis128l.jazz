@@ -2,8 +2,7 @@ inline fn update(#secret reg u128[8] st,
                  #secret reg u128 m0, #secret reg u128 m1)
      -> #secret reg u128[8]
 {
-    reg u128 st7;
-    st7 = st[7];
+    reg u128 st7 = st[7];
     reg u128[2] t;
     t[1] = st[4] ^ m1;
     st[7] = #VAESENC(st[6], st[7]);
@@ -78,8 +77,7 @@ inline fn declast(#secret reg u128[8] st, #public reg u128[2] t,
     stack u128[2] pad;
     pad[0] = out[0];
     pad[1] = out[1];
-    reg u64 i;
-    i = left;
+    reg u64 i = left;
     while (i < 32) {
         pad[u8(int) i] = 0;
         i += 1;
@@ -136,8 +134,7 @@ inline fn finalize(#secret reg u128[8] st,
     msg_len <<= 3;
     sizes[0] = ad_len;
     sizes[1] = msg_len;
-    reg u128 t;
-    t = st[2] ^ sizes[u128 0];
+    reg u128 t = st[2] ^ sizes[u128 0];
 
     inline int i;
     for i = 0 to 7 {
@@ -222,8 +219,7 @@ export fn _aegis128l_encrypt(#public reg u64 params)
     full_blocks = ad_len_;
     full_blocks = full_blocks & -32;
 
-    reg u64 i;
-    i = #set0();
+    reg u64 i = #set0();
 
     #align while (i < full_blocks) {
         reg u128[2] t;
@@ -240,8 +236,7 @@ export fn _aegis128l_encrypt(#public reg u64 params)
         ad_p += i;
 
         stack u128[2] pad;
-        reg u128 zero;
-        zero = #set0_128();
+        reg u128 zero = #set0_128();
         pad[0] = zero;
         pad[1] = zero;
 
@@ -282,8 +277,7 @@ export fn _aegis128l_encrypt(#public reg u64 params)
         ct_p += i;
 
         stack u128[2] pad;
-        reg u128 zero;
-        zero = #set0_128();
+        reg u128 zero = #set0_128();
         pad[0] = zero;
         pad[1] = zero;
 
@@ -311,8 +305,7 @@ export fn _aegis128l_encrypt(#public reg u64 params)
 
     // finalize
 
-    reg u64 ret;
-    ret = finalize(st, tag_p, tag_len, ad_len_, msg_len_, false);
+    reg u64 ret = finalize(st, tag_p, tag_len, ad_len_, msg_len_, false);
 
     return ret;
 }
@@ -344,8 +337,7 @@ export fn _aegis128l_decrypt(#public reg u64 params)
     full_blocks = ad_len_;
     full_blocks = full_blocks & -32;
 
-    reg u64 i;
-    i = #set0();
+    reg u64 i = #set0();
     #align while (i < full_blocks) {
         reg u128[2] t;
         t[0] = (u128)[ad_p + i];
@@ -361,8 +353,7 @@ export fn _aegis128l_decrypt(#public reg u64 params)
         ad_p += i;
 
         stack u128[2] pad;
-        reg u128 zero;
-        zero = #set0_128();
+        reg u128 zero = #set0_128();
         pad[0] = zero;
         pad[1] = zero;
 
@@ -403,8 +394,7 @@ export fn _aegis128l_decrypt(#public reg u64 params)
         ct_p += i;
 
         #flexible stack u128[2] pad;
-        reg u128 zero;
-        zero = #set0_128();
+        reg u128 zero = #set0_128();
         pad[0] = zero;
         pad[1] = zero;
 
@@ -432,8 +422,7 @@ export fn _aegis128l_decrypt(#public reg u64 params)
 
     // finalize
 
-    reg u64 ret;
-    ret = finalize(st, tag_p, tag_len, ad_len_, ct_len_, true);
+    reg u64 ret = finalize(st, tag_p, tag_len, ad_len_, ct_len_, true);
 
     return ret;
 }
