@@ -1,6 +1,6 @@
 *~
 .vscode
-src/*.o
+src/*/*.o
 test
 .zig-cache
 zig-out
@@ -8,3 +8,4 @@ test128l
 test128x2
 test256
 test256x2
+mutagen
