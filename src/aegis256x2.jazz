@@ -140,16 +140,16 @@ inline fn init(#public reg u64 key_p, #public reg u64 nonce_p)
     inline int i;
     for i = 0 to 4 {
         st[3] ^= ctx;
-        st[5] ^= ctx;        
+        st[5] ^= ctx;
         st = update(st, k0);
         st[3] ^= ctx;
-        st[5] ^= ctx;        
+        st[5] ^= ctx;
         st = update(st, k1);
         st[3] ^= ctx;
-        st[5] ^= ctx;        
+        st[5] ^= ctx;
         st = update(st, k0n0);
         st[3] ^= ctx;
-        st[5] ^= ctx;        
+        st[5] ^= ctx;
         st = update(st, k1n1);
     }
     return st;
@@ -211,7 +211,7 @@ inline fn finalize(#secret reg u256[6] st,
         tag[0] = #VEXTRACTI128(tag256[0], 1);
         tag[1] = #VEXTRACTI128(tag256[1], 1);
         tag[0] ^= (128u) tag256[0];
-        tag[1] ^= (128u) tag256[1];        
+        tag[1] ^= (128u) tag256[1];
 
         if (verify) {
             reg u128[2] valid;
